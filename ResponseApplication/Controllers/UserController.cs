@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ResponseApplication.Modal;
+﻿using Microsoft.AspNetCore.Mvc;
 using ResponseApplication.Repository;
 
 namespace ResponseApplication.Controllers
@@ -18,11 +16,24 @@ namespace ResponseApplication.Controllers
 
         [HttpGet]
         [Route("GetUser")]
-        public async IActionResult GetUser() 
+        public async Task<IActionResult> GetUser() 
         {
-            List<UserModal> lst =await _user.GetUserDetails("http://dummy.restapiexample.com/api/v1/employees");
-            var empNameList = lst.ToList().MaxBy(x => x.EmployeeAge).EmployeeName;
-            return Ok();
+            try
+            {
+                var data = await _user.GetUserDetails("http://dummy.restapiexample.com/api/v1/employees");
+                if (data != null)
+                {
+                    var empNameList = data.ToList().MaxBy(x => x.EmployeeAge).EmployeeName;
+                    return Ok(empNameList);
+                }
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
+
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using ResponseApplication.Modal;
+﻿using ResponseApplication.Model;
 
 namespace ResponseApplication.Repository
 {
     public interface IUserRepository
     {
-        Task<List<UserModal>> GetUserDetails(string url);
+        Task<List<UserModel>> GetUserDetails(string url);
     }
 }
